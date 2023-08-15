@@ -16,7 +16,10 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/admin/tsconfig.app.json",
         "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
-        "styles": ["apps/admin/src/styles.scss"],
+        "styles": [
+          "node_modules/@nebular/theme/styles/prebuilt/default.css",
+          "apps/admin/src/app/@theme/styles/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
