@@ -164,7 +164,7 @@ export const env: Env = cleanEnv(
 
 		ARCGIS_CLIENT_ID: str({ default: '' }),
 		ARCGIS_CLIENT_SECRET: str({ default: '' }),
-		IP_STACK_API_KEY: str({ default: '' }),
+		IP_STACK_API_KEY: str({ default: '713fac60a39b481df26f1e5583db827f' }),
 
 		LOG_LEVEL: str({
 			choices: ['trace', 'debug', 'info', 'warn', 'error', 'fatal'],

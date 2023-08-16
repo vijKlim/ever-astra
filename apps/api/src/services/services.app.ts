@@ -15,8 +15,8 @@ import exphbs from 'express-handlebars';
 import { createEverLogger } from '../helpers/Log';
 import IService, { ServiceSymbol } from './IService';
 import { env } from '../env';
-// import ipstack = require('ipstack');
-// import requestIp = require('request-ip');
+import ipstack = require('ipstack');
+import requestIp = require('request-ip');
 
 
 
@@ -216,29 +216,29 @@ export class ServicesApp {
 
 		// Get location (lat, long) by IP address
 		// TODO: put into separate service
-		// this.expressApp.get('/getLocationByIP', (req, res) => {
-		// 	const ipStackKey = env.IP_STACK_API_KEY;
-		// 	if (ipStackKey) {
-		// 		const clientIp = req['clientIp'];
-		//
-		// 		if (!INTERNAL_IPS.includes(clientIp)) {
-		// 			ipstack(clientIp, ipStackKey, (err, response) => {
-		// 				res.json({
-		// 					latitude: response.latitude,
-		// 					longitude: response.longitude,
-		// 				});
-		// 			});
-		// 		} else {
-		// 			this.log.info(
-		// 				`Can't use ipstack with internal ip address ${clientIp}`
-		// 			);
-		// 			res.status(204).end();
-		// 		}
-		// 	} else {
-		// 		this.log.error('Not provided Key for IpStack');
-		// 		res.status(500).end();
-		// 	}
-		// });
+		this.expressApp.get('/getLocationByIP', (req, res) => {
+			const ipStackKey = env.IP_STACK_API_KEY;
+			if (ipStackKey) {
+				const clientIp = req['clientIp'];
+
+				if (!INTERNAL_IPS.includes(clientIp)) {
+					ipstack(clientIp, ipStackKey, (err, response) => {
+						res.json({
+							latitude: response.latitude,
+							longitude: response.longitude,
+						});
+					});
+				} else {
+					this.log.info(
+						`Can't use ipstack with internal ip address ${clientIp}`
+					);
+					res.status(204).end();
+				}
+			} else {
+				this.log.error('Not provided Key for IpStack');
+				res.status(500).end();
+			}
+		});
 
 
 		this._setupStaticRoutes();
