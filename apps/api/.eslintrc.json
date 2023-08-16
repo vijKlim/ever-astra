@@ -13,7 +13,10 @@
         "*.js",
         "*.jsx"
       ],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-namespace": "off",
+        "no-mixed-spaces-and-tabs": ["off", "smart-tabs"]
+      }
     },
     {
       "files": [

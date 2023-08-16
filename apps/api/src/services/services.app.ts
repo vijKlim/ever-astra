@@ -11,7 +11,6 @@ import methodOverride from 'method-override';
 import errorhandler from 'errorhandler';
 import express from 'express';
 import morgan from 'morgan';
-import exphbs from 'express-handlebars';
 import { createEverLogger } from '../helpers/Log';
 import IService, { ServiceSymbol } from './IService';
 import { env } from '../env';
