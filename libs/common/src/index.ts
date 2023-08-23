@@ -1,5 +1,6 @@
 export * from './@pyro/db'
 export * from './entities'
+export * from './interfaces'
 export * from './utils'
 export * from './routers'
 export * from './errors'

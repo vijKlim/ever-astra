@@ -1,8 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "module": "commonjs",
     "outDir": "../../dist/out-tsc",
-    "types": []
+    "types": [],
+    //tsconfig.base.json baseUrl: '.'
+    "paths": {
+      "@ever-astrada/common": ["libs/common/src/index.ts"],
+      "environments/*": ["apps/admin/src/environments/*"]
+    }
   },
   "files": ["src/main.ts"],
   "include": [

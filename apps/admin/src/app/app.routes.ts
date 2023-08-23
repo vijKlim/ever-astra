@@ -7,12 +7,14 @@ import {
     NbRequestPasswordComponent,
     NbResetPasswordComponent,
 } from '@nebular/auth';
+import {AdminAuthGuard} from "./@core/auth/admin-auth.guard";
 
 export const appRoutes: Route[] = [
     {
-        path: 'pages',
-        loadChildren: () => import('./pages/pages.module')
-            .then(m => m.PagesModule),
+        path: '',
+        loadChildren: () =>
+            import('./pages/pages.module').then((m) => m.PagesModule),
+        canActivate: [ AdminAuthGuard],
     },
     {
         path: 'auth',
@@ -44,6 +46,5 @@ export const appRoutes: Route[] = [
             },
         ],
     },
-    { path: '', redirectTo: 'pages', pathMatch: 'full' },
-    { path: '**', redirectTo: 'pages' },
+    { path: '**', redirectTo: '' },
 ];

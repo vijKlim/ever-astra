@@ -15,6 +15,14 @@ import {
 } from '@nebular/theme';
 import {ThemeModule} from "./@theme/theme.module";
 import {CoreModule} from "./@core/core.module";
+import {APOLLO_OPTIONS, ApolloModule} from "apollo-angular";
+import { HttpLink } from 'apollo-angular/http';
+import {HttpClientModule, HttpHeaders} from "@angular/common/http";
+import {ApolloLink, InMemoryCache} from '@apollo/client/core';
+import {environment} from "environments/environment";
+import {WebSocketLink} from "@apollo/client/link/ws";
+import {getOperationAST} from "graphql/utilities";
+import {AppModuleGuard} from "./app.module.guard";
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +30,8 @@ import {CoreModule} from "./@core/core.module";
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
+    ApolloModule,
+    HttpClientModule,
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbDatepickerModule.forRoot(),
@@ -34,7 +44,68 @@ import {CoreModule} from "./@core/core.module";
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory(httpLink: HttpLink) {
+        // Create an http link:
+        const http = httpLink.create({ uri: environment.GQL_ENDPOINT });
+        // Create a WebSocket link:
+        const ws: WebSocketLink = new WebSocketLink({
+          uri: environment.GQL_SUBSCRIPTIONS_ENDPOINT,
+          options: {
+            reconnect: true,
+            lazy: true,
+          },
+        });
+        const middleware = new ApolloLink((operation, forward) => {
+          operation.setContext({
+            headers: new HttpHeaders().set(
+                'Authorization',
+                `Bearer ${localStorage.getItem('token') || null}`,
+            ),
+          });
+          return forward(operation);
+        });
+
+        const link = middleware.concat(
+            ApolloLink.split(
+                (operation) => {
+                  const operationAST = getOperationAST(
+                      operation.query,
+                      operation.operationName
+                  );
+                  return (
+                      !!operationAST &&
+                      operationAST.operation === 'subscription'
+                  );
+                },
+                ws,
+                http
+            )
+        );
+
+        return {
+          link,
+          defaultOptions: {
+            watchQuery: {
+              fetchPolicy: 'network-only',
+              errorPolicy: 'ignore',
+            },
+            query: {
+              fetchPolicy: 'network-only',
+              errorPolicy: 'all',
+            },
+            mutate: {
+              errorPolicy: 'all',
+            },
+          },
+          cache: new InMemoryCache(),
+        };
+      },
+      deps: [HttpLink],
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
