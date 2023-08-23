@@ -4,6 +4,28 @@ import {TypeOrmModule, TypeOrmModuleOptions} from "@nestjs/typeorm";
 import {ServicesApp} from "./services/services.app";
 import {env} from "./env";
 import {ServicesModule} from "./services/services.module";
+import {ModuleRef} from "@nestjs/core";
+import {CommandBus, CqrsModule, EventBus} from "@nestjs/cqrs";
+import mongoose from "mongoose";
+import {createEverLogger} from "./helpers/Log";
+import Logger from "bunyan";
+import chalk from "chalk";
+import {GraphQLModule} from "@nestjs/graphql";
+import {AdminsModule} from "./graphql/admin/admins.module";
+import {ApolloDriver} from "@nestjs/apollo";
+
+const port = env.GQLPORT;
+const host = env.API_HOST;
+
+const log: Logger = createEverLogger({
+  name: 'NestJS ApplicationModule',
+});
+
+// Add here all CQRS command handlers
+export const CommandHandlers = [];
+
+// Add here all CQRS event handlers
+export const EventHandlers = [];
 
 const entities = ServicesApp.getEntities();
 
@@ -52,20 +74,71 @@ const connectionSettings: TypeOrmModuleOptions = {
 
 @Module({
   imports: [
-      ServicesModule,
-      // configure TypeORM Connection which will be possible to use inside NestJS (e.g. resolvers)
-      TypeOrmModule.forRoot(connectionSettings),
+    ServicesModule,
+    CqrsModule,
+    AdminsModule,
+    // configure TypeORM Connection which will be possible to use inside NestJS (e.g. resolvers)
+    TypeOrmModule.forRoot(connectionSettings),
+    GraphQLModule.forRoot({
+      driver: ApolloDriver,
+      typePaths: ['./**/*.graphql'],
+      installSubscriptionHandlers: true,
+      debug: !env.isProd,
+      playground: true,
+      context: ({ req, res }) => ({
+        req,
+      }),
+
+    }),
   ],
   controllers: [],
-  providers: [],
+  providers: [...CommandHandlers, ...EventHandlers],
 })
 export class ApplicationModule implements NestModule, OnModuleInit {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  configure(consumer: MiddlewareConsumer): any {
+
+  constructor(
+      private readonly moduleRef: ModuleRef,
+      private readonly command$: CommandBus,
+      private readonly event$: EventBus
+  ) {}
+
+  onModuleInit() {
+    // initialize CQRS
+    this.event$.register(EventHandlers);
+    this.command$.register(CommandHandlers);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onModuleInit(): any {
+  configure(consumer: MiddlewareConsumer): any {
+
+    console.log(chalk.green(`Configuring NestJS ApplicationModule`));
+
+    // trick for GraphQL vs MongoDB ObjectId type.
+    // See https://github.com/apollographql/apollo-server/issues/1633 and
+    // https://github.com/apollographql/apollo-server/issues/1649#issuecomment-420840287
+    const { ObjectId } = mongoose.Types;
+
+    ObjectId.prototype.valueOf = function () {
+      return this.toString();
+    };
+
+    /* Next is code which could be used to manually create GraphQL Server instead of using GraphQLModule.forRoot(...)
+
+    const schema: GraphQLSchema = this.createSchema();
+    const server: ApolloServer = this.createServer(schema);
+
+    // this creates manually GraphQL subscriptions server (over ws connection)
+    this.subscriptionsService.createSubscriptionServer(server);
+
+    const app: any = this.httpServerRef;
+
+    const graphqlPath = '/graphql';
+
+    server.applyMiddleware({app, path: graphqlPath});
+
+    */
+
+    log.info(`GraphQL Playground available at http://${host}:${port}/graphql`);
+    console.log(chalk.green(`GraphQL Playground available at http://${host}:${port}/graphql`));
   }
 
 }
