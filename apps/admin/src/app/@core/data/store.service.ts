@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Admin} from "@ever-astrada/common";
+import {Admin, User} from "@ever-astrada/common";
 @Injectable()
 export class Store {
 	get token(): string | null {
@@ -26,17 +26,17 @@ export class Store {
 		}
 	}
 
-	// get userId(): User['id'] | null {
-	// 	return localStorage.getItem('_userId') || null;
-	// }
-  //
-	// set userId(id: User['id'] | null) {
-	// 	if (id == null) {
-	// 		localStorage.removeItem('_userId');
-	// 	} else {
-	// 		localStorage.setItem('_userId', id);
-	// 	}
-	// }
+	get userId(): User['id'] | null {
+		return localStorage.getItem('_userId') || null;
+	}
+
+	set userId(id: User['id'] | null) {
+		if (id == null) {
+			localStorage.removeItem('_userId');
+		} else {
+			localStorage.setItem('_userId', id);
+		}
+	}
 
 	get maintenanceMode(): string | null {
 		return localStorage.getItem('maintenanceMode') || null;
