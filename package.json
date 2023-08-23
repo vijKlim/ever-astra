@@ -2,7 +2,13 @@
   "name": "@ever-astrada/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "ng": "cross-env NODE_ENV=development NODE_OPTIONS=--max-old-space-size=7000 yarn nx",
+    "config": "yarn ts-node ./.scripts/configure.ts",
+    "config:dev": "yarn run config -- --environment=dev",
+    "config:prod": "yarn run config -- --environment=prod",
+    "start:admin": "yarn run config:dev && yarn ng serve admin --open"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~16.1.0",
@@ -98,6 +104,7 @@
     "@types/socket.io-client": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
+    "cross-env": "^7.0.3",
     "cypress": "^12.16.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
