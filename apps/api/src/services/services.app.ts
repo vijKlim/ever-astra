@@ -20,6 +20,12 @@ import requestIp = require('request-ip');
 
 
 import * as dotenv from 'dotenv';
+import mongoose from "mongoose";
+import Bluebird from "bluebird";
+import {ConnectionOptions, createConnection, DataSource, DataSourceOptions} from "typeorm";
+import {Admin, getDummyImage} from "@ever-astrada/common";
+import {getModel} from "../@pyro/db-server";
+import {AdminsService} from "./admins";
 const conf = dotenv.config();
 
 // local IPs
@@ -28,6 +34,8 @@ const INTERNAL_IPS = ['127.0.0.1', '::1'];
 @injectable()
 export class ServicesApp {
 	protected db_server = process.env.DB_ENV || 'primary';
+
+  protected db: mongoose.Connection;
 
 	protected expressApp: express.Express;
 	protected httpsServer: https.Server;
@@ -44,8 +52,10 @@ export class ServicesApp {
 	private callback: () => void;
 
 	constructor(
-		// @multiInject(ServiceSymbol)
-		// protected services: IService[]
+		@multiInject(ServiceSymbol)
+		protected services: IService[],
+    @inject(AdminsService)
+    private readonly _adminsService: AdminsService
 	) {
 
 		// If the Node process ends, close the Mongoose connection
@@ -59,26 +69,70 @@ export class ServicesApp {
 		await this._connectDB();
 	}
 
+  static getEntities() {
+      const entities = [
+          Admin
+      ];
+      return entities;
+  }
+
+
 	private _gracefulExit() {
+		try {
+			if (this.db != null) {
+				this.db.close(true).then(() => {
+          this.log.info(
+            'Mongoose default connection with DB :' +
+            this.db_server +
+            ' is disconnected through app termination'
+          );
+          process.exit(0);
+        });
+			}
+		} catch (err) {
+			process.exit(0);
+		}
+
+    //TODO del this
     process.exit(0);
-		// try {
-		// 	if (this.db != null) {
-		// 		this.db.close(() => {
-		// 			this.log.info(
-		// 				'Mongoose default connection with DB :' +
-		// 					this.db_server +
-		// 					' is disconnected through app termination'
-		// 			);
-		// 			process.exit(0);
-		// 		});
-		// 	}
-		// } catch (err) {
-		// 	process.exit(0);
-		// }
 	}
 
   private async _connectDB() {
     try {
+
+      const isSSL = process.env.DB_SSL_MODE && process.env.DB_SSL_MODE !== 'false';
+
+      // let's temporary save Cert in ./tmp/logs folder because we have write access to it
+      const sslCertPath = `${env.LOGS_PATH}/ca-certificate.crt`;
+
+      console.log(`Using temp SSL Cert Path: ${sslCertPath}`);
+
+      if (isSSL) {
+        const base64data = process.env.DB_CA_CERT;
+        const buff = Buffer.from(base64data, 'base64');
+        const sslCert = buff.toString('ascii');
+        fs.writeFileSync(sslCertPath, sslCert);
+      }
+
+      const connectionOptions: mongoose.ConnectOptions = {
+        ssl: isSSL,
+        sslCA: isSSL ? sslCertPath : undefined,
+        user: process.env.DB_USER,
+        pass: process.env.DB_PASS,
+        dbName: process.env.DB_NAME || 'ever_development',
+        connectTimeoutMS: ServicesApp._connectTimeoutMS,
+        appName: 'ever_demand'
+      };
+
+      const mongoConnect: mongoose.Mongoose = await mongoose.connect(
+        env.DB_URI,
+        connectionOptions
+      );
+
+      this.db = mongoConnect.connection;
+
+      this._configDBEvents();
+
       this._onDBConnect();
     } catch (err) {
       this.log.error(
@@ -88,7 +142,34 @@ export class ServicesApp {
     }
   }
 
+  private _configDBEvents() {
+    this.db.on('error', (err) => this.log.error(err));
+
+    this.db.on('disconnected', () => {
+      this.log.warn(
+        'Mongoose default connection to DB :' +
+        this.db_server +
+        ' disconnected'
+      );
+    });
+
+    this.db.on('connected', () => {
+      this.log.info(
+        'Mongoose default connection to DB :' +
+        this.db_server +
+        ' connected'
+      );
+    });
+  }
+
   private async _onDBConnect() {
+    // that's important to see even if logs disabled, do not remove!
+    console.log('Connected to DB');
+
+    this.log.info({ db: this.db_server }, 'Connected to DB');
+
+    await this._registerModels();
+    await this._registerEntityAdministrator();
 
     await this._startExpress();
 
@@ -104,13 +185,57 @@ export class ServicesApp {
     console.log(process.memoryUsage());
   }
 
+  /**
+   * Create initial (default) Admin user with default credentials:
+   * Email: admin@ever.co
+   * Password: admin
+   *
+   * @private
+   * @memberof ServicesApp
+   */
+  private async _registerEntityAdministrator() {
+    const adminEmail = 'admin@ever.co'; // TODO: put to config
+    const adminPassword = 'admin'; // TODO: put to config
+
+    const adminCollectionCount = await this._adminsService.count({
+      email: adminEmail,
+    });
+
+    if (adminCollectionCount === 0) {
+      this._adminsService.register({
+        admin: {
+          email: adminEmail,
+          name: 'Admin',
+          hash: null,
+          pictureUrl: getDummyImage(300, 300, 'A'),
+        },
+        password: adminPassword,
+      });
+    }
+  }
+
 	private _getBaseUrl(url: string) {
 		if (url) {
 			return url.slice(0, url.lastIndexOf('/') + 1).toString();
 		}
 	}
 
+  private async _registerModels() {
+    await (<any>Bluebird).map(this.services, async (service) => {
+      const obj = (service as any).DBObject;
 
+      if (obj != null) {
+        console.log('Service DBObject Name: ' +  obj.modelName);
+
+        const model = getModel(obj);
+
+        if (model) {
+          // get the model to register it's schema indexes in db
+          await model.createIndexes();
+        }
+      }
+    });
+  }
 
 	private async _startExpress() {
 		this.expressApp = (<any>express)();

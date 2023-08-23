@@ -58,7 +58,6 @@ process.on('unhandledRejection', (err, promise) => {
 
 (async () => {
 
-
   const app = servicesContainer.get<ServicesApp>(ServicesApp);
 
   await app.start(async () => {
