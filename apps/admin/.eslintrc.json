@@ -17,7 +17,7 @@
           "error",
           {
             "type": "element",
-            "prefix": ["ever-astrada","ngx"],
+            "prefix": ["ea","ngx"],
             "style": "kebab-case"
           }
         ]
