@@ -41,6 +41,8 @@
     "@nestjsx/crud-typeorm": "^5.0.0-alpha.3",
     "@ng-select/ng-select": "^11.1.1",
     "@ngneat/until-destroy": "^10.0.0",
+    "@ngx-translate/core": "^15.0.0",
+    "@ngx-translate/http-loader": "^8.0.0",
     "apollo-angular": "^5.0.0",
     "axios": "^1.0.0",
     "bcrypt": "^5.1.1",
