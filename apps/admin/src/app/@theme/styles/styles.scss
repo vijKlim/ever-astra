@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text:600i&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:200,300,400,500,600,700,800&display=swap');
 
 // themes - our custom or/and out of the box themes
 @import 'themes';
@@ -7,24 +9,41 @@
 @import '@nebular/theme/styles/globals';
 @import '@nebular/auth/styles/globals';
 
-
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 @import "bootstrap/scss/variables-dark";
 @import "bootstrap/scss/maps"; // **Newly added!**
-
 @import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/grid';
 
+@import './material/angular-material';
 
 // loading progress bar theme
 @import './pace.theme';
 
 @import './layout';
 @import './overrides';
+@import './material/material-overrides';
+@import './gauzy/gauzy-overrides';
+
+@import './site-menu.scss';
+
+// install ng-select default theme
+@import '@ng-select/ng-select/themes/default.theme.css';
+@import './includes/fullcalendar';
+@import './includes/tabset';
+@import './includes/ng-select';
+@import './includes/ng5-slider';
+@import './includes/dialog';
+@import './includes/scroll';
+
+// install swiper.js
+//@import 'swiper/swiper';
+
 
 // install the framework and custom global styles
 @include nb-install() {
+  @include angular-material();
 
   // framework global styles
   @include nb-theme-global();
@@ -35,4 +54,6 @@
   @include ngx-pace-theme();
 
   @include nb-overrides();
-};
+  @include material-overrides();
+  @include gauzy-overrides();
+}

@@ -15,6 +15,9 @@
         "main": "apps/admin/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/admin/tsconfig.app.json",
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/admin/src/app/@theme/styles"]
+        },
         "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
         "styles": [
           "node_modules/@nebular/theme/styles/prebuilt/default.css",
