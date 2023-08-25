@@ -31,3 +31,13 @@ export interface IUser extends IUserCreateObject, IUserInitializeObject, DBRawOb
 	devicesIds: string[];
 	readonly fullAddress: string;
 }
+
+export enum LanguagesEnum {
+  ENGLISH = 'en',
+  RUSSIAN = 'ru',
+}
+
+export enum ComponentLayoutStyleEnum {
+  CARDS_GRID = 'CARDS_GRID',
+  TABLE = 'TABLE'
+}

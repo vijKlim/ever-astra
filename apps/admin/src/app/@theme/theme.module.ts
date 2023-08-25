@@ -48,6 +48,12 @@ import {MATERIAL_DARK_THEME} from "./styles/material/theme.material-dark";
 import {GAUZY_DARK} from "./styles/gauzy/theme.gauzy-dark";
 import {ThemeSidebarModule} from "./components/theme-sidebar/theme-sidebar.module";
 import {MatRippleModule} from "@angular/material/core";
+import {UserComponent} from "./components/user/user.component";
+import {PopupComponent} from "./components/popup/popup.component";
+import {
+  ThemeSelectorModule
+} from "./components/theme-sidebar/theme-settings/components/theme-selector/theme-selector.module";
+import {SidebarMenuModule} from "../@shared/sidebar-menu/sidebar-menu.module";
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -65,7 +71,9 @@ const NB_MODULES = [
 ];
 
 const MODULES = [
-  TranslateModule
+  TranslateModule,
+  ThemeSelectorModule,
+  SidebarMenuModule,
 ];
 
 const COMPONENTS = [
@@ -77,7 +85,9 @@ const COMPONENTS = [
   OneColumnLayoutComponent,
   ThreeColumnsLayoutComponent,
   TwoColumnsLayoutComponent,
-  UserMenuComponent
+  UserMenuComponent,
+  UserComponent,
+  PopupComponent
 ];
 const PIPES = [
   CapitalizePipe,
@@ -90,8 +100,8 @@ const PIPES = [
 const EXPORT_IMPORT = [CommonModule, ThemeSidebarModule, MatRippleModule];
 
 @NgModule({
-  imports: [CommonModule, ...NB_MODULES,  ...MODULES],
-  exports: [CommonModule, ...PIPES, ...COMPONENTS],
+  imports: [...EXPORT_IMPORT, ...NB_MODULES,  ...MODULES],
+  exports: [...EXPORT_IMPORT, ...PIPES, ...COMPONENTS],
   declarations: [...COMPONENTS, ...PIPES],
 })
 export class ThemeModule {

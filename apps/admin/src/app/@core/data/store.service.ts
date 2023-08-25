@@ -77,4 +77,14 @@ export class Store {
    hasPermission(permission: any) {
     return false
   }
+
+  get currentTheme(): string | null
+  {
+    return localStorage.getItem('themeName');
+  }
+
+  set currentTheme(name: string)
+  {
+    localStorage.setItem('themeName', name);
+  }
 }

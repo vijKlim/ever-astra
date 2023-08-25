@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { ThemeSelectorComponent } from '../theme-selector.component';
-import { Store } from 'apps/gauzy/src/app/@core/services';
+
+import {Store} from "../../../../../../../@core/data/store.service";
 
 @Component({
 	selector: 'gauzy-theme-selector-image',
@@ -10,7 +11,7 @@ import { Store } from 'apps/gauzy/src/app/@core/services';
 })
 export class ThemeSelectorImageComponent extends ThemeSelectorComponent {
   isOpen: boolean = false;
-	constructor(readonly themeService: NbThemeService, readonly store: Store) {
+	constructor(override readonly themeService: NbThemeService, override readonly store: Store) {
 		super(themeService, store);
 		this.ngOnInit();
 	}

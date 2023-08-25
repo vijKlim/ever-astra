@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-// import { IUser } from '@gauzy/contracts';
 import {IUser} from "@ever-astrada/common";
 import { filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -15,16 +14,17 @@ export class UserComponent implements OnInit {
 
 	@Output() clicked: EventEmitter<any> = new EventEmitter<boolean>();
 
-	online$: Observable<boolean>;
+  online$: Observable<boolean>;
 
 	constructor() { }
 
 	ngOnInit(): void {
 		this.online$ = this.user$.pipe(
-			filter((user: IUser) => !!user && !!user.employee),
+			// filter((user: IUser) => !!user && !!user.employee),
+			filter((user: IUser) => true),
 			map(
 				(user: IUser) =>
-					user?.employee?.isOnline && !user?.employee?.isAway
+					true // user?.employee?.isOnline && !user?.employee?.isAway
 			)
 		);
 	}

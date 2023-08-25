@@ -5,7 +5,7 @@
 
 	<nb-sidebar class="user-workspace" state="compacted" tag="user-workspace">
 <!--		<div><gauzy-workspaces></gauzy-workspaces></div>-->
-<!--		<gauzy-user [user$]="user$" (click)="isOpen = !isOpen"></gauzy-user>-->
+		<gauzy-user [user$]="user$" (click)="isOpen = !isOpen"></gauzy-user>
 	</nb-sidebar>
 	<nb-sidebar
 		class="menu-sidebar sidebar_class"
@@ -63,11 +63,11 @@
 		fixed
 		[end]="true"
 	>
-<!--		<ngx-theme-sidebar [config]="sidebar"></ngx-theme-sidebar>-->
+		<ngx-theme-sidebar [config]="sidebar"></ngx-theme-sidebar>
 	</nb-sidebar>
 </nb-layout>
-<!--<gauzy-user-menu-->
-<!--	[user$]="user$"-->
-<!--	(close)="isOpen=false"-->
-<!--	*ngIf="isOpen"-->
-<!--&gt;</gauzy-user-menu>-->
+<gauzy-user-menu
+	[user$]="user$"
+	(close)="isOpen=false"
+	*ngIf="isOpen"
+></gauzy-user-menu>

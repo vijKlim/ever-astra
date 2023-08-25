@@ -8,7 +8,8 @@ import { COSMIC_THEME } from '../../../../../styles/theme.cosmic';
 import { MATERIAL_LIGHT_THEME } from '../../../../../styles/material/theme.material-light';
 import { MATERIAL_DARK_THEME } from '../../../../../styles/material/theme.material-dark';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { Store } from 'apps/gauzy/src/app/@core';
+
+import {Store} from "../../../../../../@core/data/store.service";
 import { NbThemeService } from '@nebular/theme';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 
@@ -167,5 +168,5 @@ export class ThemeSelectorComponent implements OnInit {
 		return res;
 	}
 
-	ngOnDestroy(): void {}
+
 }

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ThemeSelectorComponent } from '../theme-selector.component';
 import { NbThemeService } from '@nebular/theme';
-import { Store } from '../../../../../../../@core/services/store.service';
+import {Store} from "../../../../../../../@core/data/store.service";
 import { SwitchThemeService } from './switch-theme.service';
 
 @Component({
@@ -21,8 +21,8 @@ export class SwitchThemeComponent extends ThemeSelectorComponent {
 	 */
 	constructor(
 		private readonly switchService: SwitchThemeService,
-		readonly themeService: NbThemeService,
-		readonly store: Store
+        override readonly themeService: NbThemeService,
+        override readonly store: Store
 	) {
 		super(themeService, store);
 		// Listerning event and switching to current OS color theme
