@@ -73,4 +73,8 @@ export class Store {
 	clear() {
 		localStorage.clear();
 	}
+
+   hasPermission(permission: any) {
+    return false
+  }
 }

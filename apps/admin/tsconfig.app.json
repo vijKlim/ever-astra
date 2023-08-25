@@ -7,6 +7,7 @@
     //tsconfig.base.json baseUrl: '.'
     "paths": {
       "@ever-astrada/common": ["libs/common/src/index.ts"],
+      "@ever-astrada/common-angular": ["libs/common-angular/src/index.ts"],
       "environments/*": ["apps/admin/src/environments/*"]
     }
   },

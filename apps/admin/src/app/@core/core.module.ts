@@ -11,6 +11,7 @@ import { DataModule } from './data/data.module';
 import { AnalyticsService } from './utils/analytics.service';
 import { AuthModule } from './auth/auth.module';
 import { NbEverRoleProvider } from './roleProvider';
+import {LayoutService} from "./utils/layout.service";
 
 export const NB_CORE_PROVIDERS = [
   ...DataModule.forRoot().providers,
@@ -33,6 +34,7 @@ export const NB_CORE_PROVIDERS = [
     useClass: NbEverRoleProvider,
   },
   AnalyticsService,
+  LayoutService
 ];
 
 @NgModule({

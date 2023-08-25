@@ -1,26 +1,107 @@
-import { Component } from '@angular/core';
+import {
+	AfterViewInit,
+	Component,
+	Inject,
+	PLATFORM_ID,
+	ViewChild,
+	OnInit,
+	OnDestroy
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { NbLayoutComponent, NbSidebarService } from '@nebular/theme';
+import {IUser} from "@ever-astrada/common";
+// import { IUser } from '@gauzy/contracts';
+import { WindowModeBlockScrollService } from '../../services/window-mode-block-scroll.service';
+import { Store } from '../../../@core/data/store.service';
+// import { NavigationBuilderService, Store } from '../../../@core/services';
+import { DEFAULT_SIDEBARS } from '../../components/theme-sidebar/default-sidebars';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { LayoutService } from '../../../@core/utils/layout.service';
+import { Observable } from 'rxjs';
+import {NavigationBuilderService} from "../../../@core/services/navigation-builder";
 
+@UntilDestroy({ checkProperties: true })
 @Component({
-  selector: 'ngx-one-column-layout',
-  styleUrls: ['./one-column.layout.scss'],
-  template: `
-    <nb-layout windowMode>
-      <nb-layout-header fixed>
-        <ngx-header></ngx-header>
-      </nb-layout-header>
-
-      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive start>
-        <ng-content select="nb-menu"></ng-content>
-      </nb-sidebar>
-
-      <nb-layout-column>
-        <ng-content select="router-outlet"></ng-content>
-      </nb-layout-column>
-
-      <nb-layout-footer fixed>
-        <ngx-footer></ngx-footer>
-      </nb-layout-footer>
-    </nb-layout>
-  `,
+	selector: 'ngx-one-column-layout',
+	styleUrls: ['./one-column.layout.scss'],
+	templateUrl: './one-column.layout.html'
 })
-export class OneColumnLayoutComponent {}
+export class OneColumnLayoutComponent
+	implements OnInit, AfterViewInit, OnDestroy
+{
+	@ViewChild(NbLayoutComponent) layout: NbLayoutComponent;
+
+	private _user$: Observable<IUser>;
+	loading: boolean;
+	userMenu = [
+		{ title: 'Profile', link: '/pages/auth/profile' },
+		{ title: 'Log out', link: '/auth/logout' }
+	];
+
+	isOpen = false;
+	isExpanded = true;
+	isCollapse = true;
+	trigger = true;
+
+	constructor(
+		@Inject(PLATFORM_ID) private platformId,
+		private readonly windowModeBlockScrollService: WindowModeBlockScrollService,
+		private readonly store: Store,
+		public readonly navigationBuilderService: NavigationBuilderService,
+		private readonly sidebarService: NbSidebarService,
+		private readonly layoutService: LayoutService
+	) {
+		Object.entries(DEFAULT_SIDEBARS).forEach(([id, config]) => {
+			navigationBuilderService.registerSidebar(id, config);
+			navigationBuilderService.addSidebarActionItem(config.actionItem);
+		});
+		navigationBuilderService.getSidebarWidgets();
+		this._user$ = new Observable();
+	}
+
+	ngOnInit() {
+		this.loading = true;
+		this.user$ = null;//this.store.user$;
+		this.loading = false;
+	}
+
+	ngAfterViewInit() {
+		if (isPlatformBrowser(this.platformId)) {
+			this.windowModeBlockScrollService.register(this.layout);
+		}
+	}
+
+	toggle() {
+		this.isExpanded = !this.isExpanded;
+		if (this.isExpanded) {
+			this.sidebarService.expand('menu-sidebar');
+		} else {
+      this.trigger = true;
+			this.sidebarService.toggle(true, 'menu-sidebar');
+			this.layoutService.changeLayoutSize();
+		}
+	}
+
+	onCollapse(event: boolean) {
+		this.isCollapse = event;
+		if (!this.isCollapse && !this.isExpanded) this.toggle();
+	}
+
+	onStateChange(event) {
+		this.isExpanded = event === 'expanded' ? true : false;
+    this.trigger = event === 'compacted' ? true : this.isCollapse;
+	}
+
+	ngOnDestroy() {
+		this.navigationBuilderService.clearSidebars();
+		this.navigationBuilderService.clearActionBars();
+	}
+
+	public get user$(): Observable<IUser> {
+		return this._user$;
+	}
+
+	public set user$(value: Observable<IUser>) {
+		this._user$ = value;
+	}
+}

@@ -1,0 +1,29 @@
+{
+  "name": "common-angular",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/common-angular/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/common-angular",
+        "main": "libs/common-angular/src/index.ts",
+        "tsConfig": "libs/common-angular/tsconfig.lib.json",
+        "assets": ["libs/common-angular/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/common-angular/**/*.ts",
+          "libs/common-angular/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
