@@ -1,4 +1,4 @@
-import IGeoLocation, { IGeoLocationCreateObject } from './IGeoLocation';
+import { IGeoLocation, IGeoLocationCreateObject } from './IGeoLocation';
 import { DBCreateObject, DBRawObject, PyroObjectId } from '../@pyro/db';
 
 export interface IUserInitializeObject extends DBCreateObject {

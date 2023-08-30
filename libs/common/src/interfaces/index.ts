@@ -5,3 +5,4 @@ export * from './ILanguage';
 export * from './IFeature';
 export * from './IRolePermission';
 export * from './role.model';
+export * from './IGeoLocation';

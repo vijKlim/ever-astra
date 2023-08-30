@@ -1,5 +1,5 @@
 import { sample } from 'underscore';
-import GeoLocation from "../entities/GeoLocation";
+import {GeoLocation} from "../entities/GeoLocation";
 import {ILocation} from "../interfaces/IGeoLocation";
 
 /**

@@ -40,10 +40,9 @@ export interface IGeolocationUpdateObject {
 	loc?: ILocation;
 }
 
-interface IGeoLocation extends DBRawObject, IGeoLocationCreateObject {
+export interface IGeoLocation extends DBRawObject, IGeoLocationCreateObject {
 	_id: PyroObjectId;
 	_createdAt: Date | string;
 	_updatedAt: Date | string;
 }
 
-export default IGeoLocation;

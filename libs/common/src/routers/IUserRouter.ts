@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import {User} from '../entities/User';
-import GeoLocation from '../entities/GeoLocation';
+import {GeoLocation} from '../entities/GeoLocation';
 import { IUserCreateObject } from '../interfaces/IUser';
 
 export interface IUserRouter {

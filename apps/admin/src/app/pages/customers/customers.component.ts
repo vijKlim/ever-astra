@@ -181,12 +181,12 @@ export class CustomersComponent implements AfterViewInit, OnDestroy {
 			this._translateService.get('Id'),
 			getTranslate('IMAGE'),
 			getTranslate('NAME'),
-			getTranslate('EMAIL'),
-			getTranslate('PHONE'),
-			getTranslate('COUNTRY'),
+			// getTranslate('EMAIL'),
+			// getTranslate('PHONE'),
+			// getTranslate('COUNTRY'),
 			getTranslate('CITY'),
 			getTranslate('ADDRESS'),
-			getTranslate('ORDERS_QTY')
+			// getTranslate('ORDERS_QTY')
 		).subscribe(
 			([
 				id,
@@ -257,6 +257,7 @@ export class CustomersComponent implements AfterViewInit, OnDestroy {
 	}
 
 	private async _loadDataSmartTable(page = 1) {
+    console.log('_loadDataSmartTable')
 		if (this.$users) {
 			await this.$users.unsubscribe();
 		}
@@ -301,7 +302,7 @@ export class CustomersComponent implements AfterViewInit, OnDestroy {
 				};
 			});
 
-			await this.loadDataCount();
+			// await this.loadDataCount();
 
 			if (this.showOnlyBanned) {
 				usersVM = usersVM.filter((user) => user.isBanned);

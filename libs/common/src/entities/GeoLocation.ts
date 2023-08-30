@@ -1,6 +1,6 @@
 import { DBObject, Index, ModelName, Schema } from '../@pyro/db';
 import {
-	default as IGeoLocation,
+  IGeoLocation,
 	IGeoLocationCreateObject,
 	ILocation,
 } from '../interfaces/IGeoLocation';
@@ -21,7 +21,7 @@ export const locationPreSchema = {
  * @implements {IGeoLocation}
  */
 @ModelName('GeoLocation')
-class GeoLocation extends DBObject<IGeoLocation, IGeoLocationCreateObject>
+export class GeoLocation extends DBObject<IGeoLocation, IGeoLocationCreateObject>
 	implements IGeoLocation {
 	@Schema({ type: Number, required: false })
 	@Column()
@@ -91,7 +91,6 @@ class GeoLocation extends DBObject<IGeoLocation, IGeoLocationCreateObject>
 	}
 }
 
-export default GeoLocation;
 
 export enum Country {
 	// If you wonder what abbreviation must have to use for

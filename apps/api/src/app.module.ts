@@ -13,6 +13,7 @@ import chalk from "chalk";
 import {GraphQLModule} from "@nestjs/graphql";
 import {AdminsModule} from "./graphql/admin/admins.module";
 import {ApolloDriver} from "@nestjs/apollo";
+import {UsersModule} from "./graphql/users/users.module";
 
 const port = env.GQLPORT;
 const host = env.API_HOST;
@@ -77,6 +78,7 @@ const connectionSettings: TypeOrmModuleOptions = {
     ServicesModule,
     CqrsModule,
     AdminsModule,
+    UsersModule,
     // configure TypeORM Connection which will be possible to use inside NestJS (e.g. resolvers)
     TypeOrmModule.forRoot(connectionSettings),
     GraphQLModule.forRoot({

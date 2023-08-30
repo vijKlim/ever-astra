@@ -47,6 +47,7 @@ export class UsersService {
 	}
 
 	getUsers(pagingOptions?: IPagingOptions): Observable<User[]> {
+    console.log('TTTTTTT')
 		return this._apollo
 			.watchQuery<{ users: IUser[] }>({
 				query: gql`
@@ -74,7 +75,7 @@ export class UsersService {
 					}
 				`,
 				variables: { pagingOptions },
-				pollInterval: 5000,
+				// pollInterval: 5000,
 			})
 			.valueChanges.pipe(
 				map((res) => res.data.users),

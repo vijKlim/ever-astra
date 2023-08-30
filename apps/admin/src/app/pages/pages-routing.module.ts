@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import {FakeDataModuleGuard} from "./fakeData/fakeData.module.guard";
 
 const routes: Routes = [{
   path: '',
@@ -36,6 +37,14 @@ const routes: Routes = [{
         import('./customers/customers.module').then(
           (m) => m.CustomersModule
         ),
+    },
+    {
+      path: 'generate-initial-data',
+      loadChildren: () =>
+        import('./fakeData/fakeData.module').then(
+          (m) => m.FakeDataModule
+        ),
+      canActivate: [FakeDataModuleGuard],
     },
   ],
 }];

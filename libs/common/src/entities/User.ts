@@ -1,4 +1,4 @@
-import GeoLocation from './GeoLocation';
+import {GeoLocation} from './GeoLocation';
 import { DBObject, getSchema, ModelName, Schema, Types } from '../@pyro/db';
 import { Entity, Column } from 'typeorm';
 import {IUser, IUserCreateObject} from "../interfaces/IUser";

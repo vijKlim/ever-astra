@@ -7,6 +7,8 @@ import {
 	IUserCreateObject,
 	IResponseGenerate1000Customers,
 } from '@ever-astrada/common';
+import {FakeDataGuard} from "../../auth/guards/fake-data.guard";
+import {UseGuards} from "@nestjs/common";
 
 
 @Resolver('User')
@@ -30,4 +32,34 @@ export class UserResolver {
 		return users.map((u) => new User(u));
 	}
 
+  @Query()
+  @UseGuards(FakeDataGuard)
+  async generate1000Customers(
+    _,
+    { defaultLng, defaultLat }: { defaultLng: number; defaultLat: number }
+  ): Promise<IResponseGenerate1000Customers> {
+    let success = true;
+    let message = null;
+
+    try {
+      // await this._ordersService.generateOrdersPerEachCustomer(
+      //   await this._usersService.generate1000Customers(
+      //     defaultLng,
+      //     defaultLat
+      //   )
+      // );
+      await this._usersService.generate1000Customers(
+        defaultLng,
+        defaultLat
+      )
+    } catch (err) {
+      message = err.message;
+      success = false;
+    }
+
+    return {
+      success,
+      message,
+    };
+  }
 }

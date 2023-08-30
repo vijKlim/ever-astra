@@ -18,10 +18,18 @@ import {
 } from 'rxjs/operators';
 
 
-import {User, IPagingOptions, IUserRouter, IUserCreateObject} from "@ever-astrada/common";
-import GeoLocation from 'libs/common/src/entities/GeoLocation';
-import {Observable} from 'rxjs';
+import {
+  User,
+  IPagingOptions,
+  IUserRouter,
+  IUserCreateObject,
+  IGeoLocationCreateObject,
+  Country, GeoLocation
+} from "@ever-astrada/common";
 
+import {Observable} from 'rxjs';
+import _ = require('lodash');
+import {faker} from '@faker-js/faker';
 
 /**
  * Customers Service
@@ -88,7 +96,7 @@ export class UsersService
 		if (pagingOptions.sort) {
 			sortObj[pagingOptions.sort.field] = pagingOptions.sort.sortBy;
 		}
-this.log.info('FFFFFFFFFFFFFFFFFFFFF')
+
 		return this.Model.find({
 			...findInput,
 			isDeleted: { $eq: false },
@@ -100,6 +108,73 @@ this.log.info('FFFFFFFFFFFFFFFFFFFFF')
 			.exec();
 	}
 
+  /**
+   * Generates Fake Customer records
+   * TODO: move to separate FakeUsersService (put into 'fake-data' folder)
+   * TODO: rename method to "generateCustomers"
+   *
+   * @param {number} defaultLng
+   * @param {number} defaultLat
+   * @returns {Promise<IUserCreateObject[]>}
+   * @memberof UsersService
+   */
+  async generate1000Customers(
+    defaultLng: number,
+    defaultLat: number
+  ): Promise<IUserCreateObject[]> {
+    const existingEmails = _.map(
+      await this.Model.find({}).select({ email: 1 }).lean().exec(),
+      (u) => u.email
+    );
+
+    const customersToCreate: IUserCreateObject[] = [];
+
+    const customerCreatedFrom = new Date(2015, 1);
+    const customerCreatedTo = new Date();
+
+    let customerCount = 1;
+
+    while (customerCount <= 1000) {
+      const firstName = faker.name.firstName();
+      const lastName = faker.name.lastName();
+      const email = faker.internet.email(firstName, lastName);
+      const isBanned = Math.random() < 0.02;
+
+      const geoLocation: IGeoLocationCreateObject = {
+        countryId: faker.number.int(Country.ZW) as Country,
+        city: faker.address.city(),
+        house: `${customerCount}`,
+        loc: {
+          type: 'Point',
+          coordinates: [defaultLng, defaultLat],
+        },
+        streetAddress: faker.address.streetAddress(),
+      };
+
+      if (!existingEmails.includes(email)) {
+        existingEmails.push(email);
+
+        customersToCreate.push({
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+          geoLocation,
+          apartment: `${customerCount}`,
+          email,
+          isBanned,
+          image: faker.image.avatar(),
+          phone: faker.phone.number(),
+          _createdAt: faker.date.between(
+            customerCreatedFrom,
+            customerCreatedTo
+          ),
+        } as any);
+
+        customerCount += 1;
+      }
+    }
+
+    return this.Model.insertMany(customersToCreate);
+  }
 
 	/**
 	 * Check if not deleted customer with given Id exists in DB and throw exception if it's not exists or deleted

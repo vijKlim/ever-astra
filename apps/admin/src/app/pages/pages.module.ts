@@ -6,6 +6,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import {TranslateModule} from "../@shared/translate/translate.module";
+import {FakeDataModuleGuard} from "./fakeData/fakeData.module.guard";
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import {TranslateModule} from "../@shared/translate/translate.module";
   declarations: [
     PagesComponent,
   ],
+  providers: [FakeDataModuleGuard]
 })
 export class PagesModule {
 }
