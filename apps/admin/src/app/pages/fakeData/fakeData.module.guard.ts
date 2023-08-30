@@ -18,12 +18,12 @@ export class FakeDataModuleGuard implements CanActivate {
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): boolean {
-		// const fakeDataGenerator = !!+this.store.fakeDataGenerator;
-    //
-		// if (!fakeDataGenerator) {
-		// 	this.router.navigate(['/']);
-		// 	return false;
-		// }
+		const fakeDataGenerator = !!+this.store.fakeDataGenerator;
+
+		if (!fakeDataGenerator) {
+			this.router.navigate(['/']);
+			return false;
+		}
 
 		return true;
 	}
