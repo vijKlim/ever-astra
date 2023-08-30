@@ -54,6 +54,7 @@ import {
   ThemeSelectorModule
 } from "./components/theme-sidebar/theme-settings/components/theme-selector/theme-selector.module";
 import {SidebarMenuModule} from "../@shared/sidebar-menu/sidebar-menu.module";
+import {LanguagesService} from "../@core/services";
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -103,6 +104,9 @@ const EXPORT_IMPORT = [CommonModule, ThemeSidebarModule, MatRippleModule];
   imports: [...EXPORT_IMPORT, ...NB_MODULES,  ...MODULES],
   exports: [...EXPORT_IMPORT, ...PIPES, ...COMPONENTS],
   declarations: [...COMPONENTS, ...PIPES],
+  providers: [
+    LanguagesService
+  ]
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders<ThemeModule> {

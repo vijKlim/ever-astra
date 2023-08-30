@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import {
-	TranslateLoader,
-	TranslateModule as NgxTranslateModule
+  TranslateLoader,
+  TranslateModule as NgxTranslateModule, TranslateStore
 } from '@ngx-translate/core';
 
 export function HttpLoaderFactory(http: HttpClient) {

@@ -19,14 +19,14 @@ export class UserComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit(): void {
-		this.online$ = this.user$.pipe(
-			// filter((user: IUser) => !!user && !!user.employee),
-			filter((user: IUser) => true),
-			map(
-				(user: IUser) =>
-					true // user?.employee?.isOnline && !user?.employee?.isAway
-			)
-		);
+		// this.online$ = this.user$.pipe(
+		// 	// filter((user: IUser) => !!user && !!user.employee),
+		// 	filter((user: IUser) => true),
+		// 	map(
+		// 		(user: IUser) =>
+		// 			true // user?.employee?.isOnline && !user?.employee?.isAway
+		// 	)
+		// );
 	}
 
 	onClicked() {

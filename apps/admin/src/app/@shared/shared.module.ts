@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // import { BackNavigationModule } from './back-navigation';
 // import { Pipes } from './pipes';
-// import { Components } from './components';
+import { Components } from './components';
 import { RouterModule } from '@angular/router';
 // import { AlertModalModule } from './alert-modal';
 // import { NgxPermissionsModule } from 'ngx-permissions';
@@ -14,12 +14,15 @@ const Modules = [
 ];
 
 @NgModule({
-	// declarations: [...Pipes, ...Components],
+	declarations: [
+    // ...Pipes,
+    ...Components
+  ],
 	imports: [CommonModule, RouterModule, ...Modules],
 	exports: [
 		// AlertModalModule,
 		// ...Pipes,
-		// ...Components,
+		...Components,
 		...Modules
 	],
 	// providers: [...Pipes]

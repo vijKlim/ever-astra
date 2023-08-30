@@ -17,7 +17,7 @@
           "error",
           {
             "type": "element",
-            "prefix": ["ea","gauzy","ngx"],
+            "prefix": ["ea","gauzy","ngx","ga"],
             "style": "kebab-case"
           }
         ]

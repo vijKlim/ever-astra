@@ -6,6 +6,7 @@
     "types": [],
     //tsconfig.base.json baseUrl: '.'
     "paths": {
+      "ng2-completer": ["node_modules/@akveo/ng2-completer"],
       "@ever-astrada/common": ["libs/common/src/index.ts"],
       "@ever-astrada/common-angular": ["libs/common-angular/src/index.ts"],
       "environments/*": ["apps/admin/src/environments/*"]

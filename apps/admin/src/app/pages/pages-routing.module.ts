@@ -17,6 +17,19 @@ const routes: Routes = [{
       redirectTo: 'dashboard',
       pathMatch: 'full',
     },
+    {
+      path: 'users',
+      loadChildren: () => import('./users/users.module').then(
+        (m) => m.UsersModule
+      ),
+      data: {
+        selectors: {
+          project: false,
+          employee: false,
+          date: false
+        }
+      }
+    },
   ],
 }];
 

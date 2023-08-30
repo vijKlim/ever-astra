@@ -17,12 +17,14 @@ import {ThemeModule} from "./@theme/theme.module";
 import {CoreModule} from "./@core/core.module";
 import {APOLLO_OPTIONS, ApolloModule} from "apollo-angular";
 import { HttpLink } from 'apollo-angular/http';
-import {HttpClientModule, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
 import {ApolloLink, InMemoryCache} from '@apollo/client/core';
 import {environment} from "environments/environment";
 import {WebSocketLink} from "@apollo/client/link/ws";
 import {getOperationAST} from "graphql/utilities";
 import {AppModuleGuard} from "./app.module.guard";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {HttpLoaderFactory} from "./@shared/translate/translate.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -43,6 +45,13 @@ import {AppModuleGuard} from "./app.module.guard";
     }),
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
     {

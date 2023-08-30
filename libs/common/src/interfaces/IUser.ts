@@ -41,3 +41,14 @@ export enum ComponentLayoutStyleEnum {
   CARDS_GRID = 'CARDS_GRID',
   TABLE = 'TABLE'
 }
+
+export interface IUserViewModel {
+  fullName: string;
+  email: string;
+  bonus?: number;
+  endWork?: any;
+  id: string;
+  roleName?: string;
+  role?: string;
+  userOrganizationId?: string;
+}
