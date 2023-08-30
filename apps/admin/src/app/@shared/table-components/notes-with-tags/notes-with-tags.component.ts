@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ViewCell } from 'ng2-smart-table';
+
 import {ComponentLayoutStyleEnum} from "@ever-astrada/common";
 import { Color } from '@kurkle/color';
 import { NbThemeService } from '@nebular/theme';
@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class NotesWithTagsComponent
 	extends TranslationBaseComponent
-	implements ViewCell, OnInit
+	implements  OnInit
 {
 	@Input()
 	rowData: any;

@@ -23,7 +23,7 @@ import * as dotenv from 'dotenv';
 import mongoose from "mongoose";
 import Bluebird from "bluebird";
 import {ConnectionOptions, createConnection, DataSource, DataSourceOptions} from "typeorm";
-import {Admin, getDummyImage} from "@ever-astrada/common";
+import {Admin, getDummyImage, User} from "@ever-astrada/common";
 import {getModel} from "../@pyro/db-server";
 import {AdminsService} from "./admins";
 const conf = dotenv.config();
@@ -71,7 +71,8 @@ export class ServicesApp {
 
   static getEntities() {
       const entities = [
-          Admin
+        Admin,
+        User
       ];
       return entities;
   }

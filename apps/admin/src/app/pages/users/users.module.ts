@@ -27,7 +27,7 @@ import { PaginationModule } from '../../@shared/pagination/pagination.module';
 import { SharedModule } from '../../@shared/shared.module';
 import {TableComponentsModule} from "../../@shared/table-components/table-components.module";
 import {CardGridModule} from "../../@shared/card-grid/card-grid.module";
-import {Ng2SmartTableModule} from "ng2-smart-table";
+import {Angular2SmartTableModule} from "angular2-smart-table";
 
 const COMPONENTS = [
 	UsersComponent
@@ -47,7 +47,7 @@ const COMPONENTS = [
 		NbButtonModule,
 		NbInputModule,
 		NbIconModule,
-		Ng2SmartTableModule,
+    Angular2SmartTableModule,
 		NbDialogModule.forChild(),
 		NbTooltipModule,
 		NgSelectModule,

@@ -168,7 +168,8 @@ export const env: Env = cleanEnv(
 
 		LOG_LEVEL: str({
 			choices: ['trace', 'debug', 'info', 'warn', 'error', 'fatal'],
-			default: 'error',
+			// default: 'error',
+			default: 'info',
 		}),
 
 		ENGINE_API_KEY: str({

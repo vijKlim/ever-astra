@@ -8,6 +8,7 @@ import {AdminsService} from "./admins";
 import {ServiceSymbol} from "./IService";
 import {IRoutersManager, RoutersManager, RouterSymbol} from "../@pyro/io";
 import {AuthService, authServiceFactory} from "./auth";
+import {UsersService} from "./users";
 
 function getRepository(t: any): any {
   const conn = getConnection('typeorm');
@@ -24,7 +25,8 @@ const bindings = new ContainerModule((bind: interfaces.Bind) => {
 
   _.each(
     [
-      AdminsService
+      AdminsService,
+      UsersService
     ],
     (Service: any) => {
       bind(Service).to(Service).inSingletonScope();
