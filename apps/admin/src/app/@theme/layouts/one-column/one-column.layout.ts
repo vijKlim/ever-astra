@@ -61,7 +61,7 @@ export class OneColumnLayoutComponent
 
 	ngOnInit() {
 		this.loading = true;
-		this.user$ = null;//this.store.user$;
+		this.user$ = this.store.user$;
 		this.loading = false;
 	}
 
@@ -89,7 +89,7 @@ export class OneColumnLayoutComponent
 
 	onStateChange(event) {
 		this.isExpanded = event === 'expanded' ? true : false;
-    this.trigger = event === 'compacted' ? true : this.isCollapse;
+		this.trigger = event === 'compacted' ? true : this.isCollapse;
 	}
 
 	ngOnDestroy() {

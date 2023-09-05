@@ -7,6 +7,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import {TranslateModule} from "../@shared/translate/translate.module";
 import {FakeDataModuleGuard} from "./fakeData/fakeData.module.guard";
+import {SidebarMenuModule} from "../@shared/sidebar-menu/sidebar-menu.module";
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import {FakeDataModuleGuard} from "./fakeData/fakeData.module.guard";
     NbIconModule,
     NbToastrModule.forRoot(),
     DashboardModule,
-    TranslateModule
+    TranslateModule,
+    SidebarMenuModule
   ],
   declarations: [
     PagesComponent,

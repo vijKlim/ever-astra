@@ -1,3 +1,4 @@
+import {ComponentLayoutStyleEnum} from "@ever-astrada/common";
 
 export enum ComponentEnum {
 	ALL_TASKS = 'ALL_TASKS',
@@ -50,3 +51,5 @@ export enum ComponentEnum {
 	SKILLS = 'SKILLS',
 	MERCHANTS = 'MERCHANTS'
 }
+
+export const SYSTEM_DEFAULT_LAYOUT = ComponentLayoutStyleEnum.TABLE;

@@ -47,7 +47,6 @@ export class UsersService {
 	}
 
 	getUsers(pagingOptions?: IPagingOptions): Observable<User[]> {
-    console.log('TTTTTTT')
 		return this._apollo
 			.watchQuery<{ users: IUser[] }>({
 				query: gql`

@@ -11,7 +11,7 @@ import {
   NbButtonModule,
   NbSelectModule,
   NbIconModule,
-  NbThemeModule,
+  NbThemeModule, NbAccordionModule, NbTooltipModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbSecurityModule } from '@nebular/security';
@@ -55,6 +55,8 @@ import {
 } from "./components/theme-sidebar/theme-settings/components/theme-selector/theme-selector.module";
 import {SidebarMenuModule} from "../@shared/sidebar-menu/sidebar-menu.module";
 import {LanguagesService} from "../@core/services";
+import {GauzyLogoComponent} from "./components/gauzy-logo/gauzy-logo.component";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -69,12 +71,15 @@ const NB_MODULES = [
   NbSelectModule,
   NbIconModule,
   NbEvaIconsModule,
+  NbAccordionModule,
+  NbTooltipModule
 ];
 
 const MODULES = [
   TranslateModule,
   ThemeSelectorModule,
   SidebarMenuModule,
+  FontAwesomeModule
 ];
 
 const COMPONENTS = [
@@ -88,7 +93,8 @@ const COMPONENTS = [
   TwoColumnsLayoutComponent,
   UserMenuComponent,
   UserComponent,
-  PopupComponent
+  PopupComponent,
+  GauzyLogoComponent
 ];
 const PIPES = [
   CapitalizePipe,

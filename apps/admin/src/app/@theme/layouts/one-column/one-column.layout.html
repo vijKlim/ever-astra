@@ -14,25 +14,25 @@
 		(stateChange)="onStateChange($event)"
 	>
 		<div class="custom-box">
-			<div class="custom-row logo">
-				<div
-					[ngClass]="isExpanded? isCollapse? 'logo-container':'logo-container not-collapsed' : 'logo-container compacted'"
-				>
+<!--			<div class="custom-row logo">-->
+<!--				<div-->
+<!--					[ngClass]="isExpanded? isCollapse? 'logo-container':'logo-container not-collapsed' : 'logo-container compacted'"-->
+<!--				>-->
 <!--					<ngx-gauzy-logo-->
 <!--						[controlled]="trigger"-->
 <!--						(onCollapsed)="onCollapse($event)"-->
 <!--					></ngx-gauzy-logo>-->
-					<button
-						*ngIf="isCollapse && isExpanded"
-						class="hidden-menu"
-						outline
-						nbButton
-						underConstruction
-					>
-						<i class="fas fa-ellipsis-h"></i>
-					</button>
-				</div>
-			</div>
+<!--					<button-->
+<!--						*ngIf="isCollapse && isExpanded"-->
+<!--						class="hidden-menu"-->
+<!--						outline-->
+<!--						nbButton-->
+<!--						underConstruction-->
+<!--					>-->
+<!--						<i class="fas fa-ellipsis-h"></i>-->
+<!--					</button>-->
+<!--				</div>-->
+<!--			</div>-->
 			<div class="custom-row menu">
 				<ng-content select="ga-sidebar-menu"></ng-content>
 			</div>
