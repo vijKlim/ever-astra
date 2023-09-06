@@ -183,15 +183,16 @@ export class Store
 
   get token(): string | null
   {
-    const { token } = this.persistQuery.getValue();
-    return token;
+    return localStorage.getItem('token')
   }
 
   set token(token: string)
   {
-    this.persistStore.update({
-      token: token
-    });
+    localStorage.setItem('token', token);
+
+    // this.persistStore.update({
+    //   token: token
+    // });
   }
 
   get adminId(): Admin['id'] | null {
@@ -283,6 +284,7 @@ export class Store
   {
     this.appStore.reset();
     this.persistStore.reset();
+    localStorage.clear();
   }
 
   getLayoutForComponent(

@@ -57,6 +57,8 @@ import {SidebarMenuModule} from "../@shared/sidebar-menu/sidebar-menu.module";
 import {LanguagesService} from "../@core/services";
 import {GauzyLogoComponent} from "./components/gauzy-logo/gauzy-logo.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {RouterModule} from "@angular/router";
+import {DirectivesModule} from "../@shared/directives/directives.module";
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -79,7 +81,8 @@ const MODULES = [
   TranslateModule,
   ThemeSelectorModule,
   SidebarMenuModule,
-  FontAwesomeModule
+  FontAwesomeModule,
+  DirectivesModule
 ];
 
 const COMPONENTS = [
@@ -107,7 +110,7 @@ const PIPES = [
 const EXPORT_IMPORT = [CommonModule, ThemeSidebarModule, MatRippleModule];
 
 @NgModule({
-  imports: [...EXPORT_IMPORT, ...NB_MODULES,  ...MODULES],
+  imports: [RouterModule, ...EXPORT_IMPORT, ...NB_MODULES,  ...MODULES],
   exports: [...EXPORT_IMPORT, ...PIPES, ...COMPONENTS],
   declarations: [...COMPONENTS, ...PIPES],
   providers: [

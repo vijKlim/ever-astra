@@ -1,61 +1,55 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {NbMediaBreakpointsService, NbMenuItem, NbMenuService, NbSidebarService, NbThemeService} from '@nebular/theme';
 
-import { map, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import {map, takeUntil, tap} from 'rxjs/operators';
+import {debounceTime, filter, Subject} from 'rxjs';
+import {untilDestroyed} from "@ngneat/until-destroy";
+import {TranslationBaseComponent} from "../../../@shared/language-base";
+import {TranslateService} from "@ngx-translate/core";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent extends TranslationBaseComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
+
+  @Input() position = 'normal';
   user: any;
 
-  themes = [
-    {
-      value: 'default',
-      name: 'Light',
-    },
-    {
-      value: 'dark',
-      name: 'Dark',
-    },
-    {
-      value: 'cosmic',
-      name: 'Cosmic',
-    },
-    {
-      value: 'corporate',
-      name: 'Corporate',
-    },
-  ];
+  createContextMenu: NbMenuItem[];
+  supportContextMenu: NbMenuItem[];
 
-  currentTheme = 'default';
+  subject$: Subject<any> = new Subject();
 
-  userMenu = [ { title: 'Profile' }, { title: 'Log out' } ];
-
-  constructor(private sidebarService: NbSidebarService,
-              private menuService: NbMenuService,
-              private themeService: NbThemeService,
-              private breakpointService: NbMediaBreakpointsService) {
+  constructor(
+    public readonly translate: TranslateService,
+    private readonly router: Router,
+    private sidebarService: NbSidebarService,
+    private menuService: NbMenuService,
+    private breakpointService: NbMediaBreakpointsService) {
+    super(translate);
   }
 
   ngOnInit() {
-    this.currentTheme = this.themeService.currentTheme;
+    this._loadContextMenus();
 
-
-    const { xl } = this.breakpointService.getBreakpointsMap();
-
-
-    this.themeService.onThemeChange()
+    this.menuService
+      .onItemClick()
       .pipe(
-        map(({ name }) => name),
-        takeUntil(this.destroy$),
+        filter(({ tag }) => tag === 'create-context-menu'),
+        // untilDestroyed(this)
       )
-      .subscribe(themeName => this.currentTheme = themeName);
+      .subscribe((e) => {
+        this.router.navigate([e.item.link], {
+          queryParams: {
+            openAddDialog: true
+          }
+        });
+      });
   }
 
   ngOnDestroy() {
@@ -63,8 +57,44 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  changeTheme(themeName: string) {
-    this.themeService.changeTheme(themeName);
+  private _loadContextMenus() {
+    this.createContextMenu = [
+      ...([
+        {
+          title: this.getTranslation('CONTEXT_MENU.PROPOSAL'),
+          icon: 'paper-plane-outline',
+          link: 'pages/sales/proposals/register'
+        }
+      ]),
+      ...([
+        {
+          title: this.getTranslation('CONTEXT_MENU.ADD_EMPLOYEE'),
+          icon: 'people-outline',
+          link: 'pages/employees'
+        }
+      ])
+    ];
+    console.log(this.createContextMenu)
+    this.supportContextMenu = [
+      {
+        title: this.getTranslation('CONTEXT_MENU.CHAT'),
+        icon: 'message-square-outline'
+      },
+      {
+        title: this.getTranslation('CONTEXT_MENU.FAQ'),
+        icon: 'clipboard-outline'
+      },
+      {
+        title: this.getTranslation('CONTEXT_MENU.HELP'),
+        icon: 'question-mark-circle-outline',
+        link: 'pages/help'
+      },
+      {
+        title: this.getTranslation('MENU.ABOUT'),
+        icon: 'droplet-outline',
+        link: 'pages/about'
+      }
+    ];
   }
 
   toggleSidebar(): boolean {
