@@ -59,6 +59,7 @@ import {GauzyLogoComponent} from "./components/gauzy-logo/gauzy-logo.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {RouterModule} from "@angular/router";
 import {DirectivesModule} from "../@shared/directives/directives.module";
+import {LayoutSelectorComponent} from "./components/layout-selector/layout-selector.component";
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -97,7 +98,8 @@ const COMPONENTS = [
   UserMenuComponent,
   UserComponent,
   PopupComponent,
-  GauzyLogoComponent
+  GauzyLogoComponent,
+  LayoutSelectorComponent
 ];
 const PIPES = [
   CapitalizePipe,

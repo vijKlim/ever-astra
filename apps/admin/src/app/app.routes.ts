@@ -11,7 +11,7 @@ import {AdminAuthGuard} from "./@core/auth/admin-auth.guard";
 
 export const appRoutes: Route[] = [
     {
-        path: '',
+        path: 'pages',
         loadChildren: () =>
             import('./pages/pages.module').then((m) => m.PagesModule),
         canActivate: [ AdminAuthGuard],
@@ -46,5 +46,6 @@ export const appRoutes: Route[] = [
             },
         ],
     },
+    { path: '', redirectTo: 'pages', pathMatch: 'full' },
     { path: '**', redirectTo: '' },
 ];

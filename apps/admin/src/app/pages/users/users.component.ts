@@ -196,6 +196,15 @@ export class UsersComponent extends PaginationFilterBaseComponent
 		// 	this.subject$.next(true);
 		// }
 	}
+  async invite() {
+    // const dialog = this.dialogService.open(InviteMutationComponent, {
+    //   context: {
+    //     invitationType: InvitationTypeEnum.USER
+    //   }
+    // });
+    // await firstValueFrom(dialog.onClose);
+  }
+
 
 	edit(selectedItem?: IUser) {
 		if (selectedItem) {

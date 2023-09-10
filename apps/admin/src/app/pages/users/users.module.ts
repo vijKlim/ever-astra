@@ -28,6 +28,8 @@ import { SharedModule } from '../../@shared/shared.module';
 import {TableComponentsModule} from "../../@shared/table-components/table-components.module";
 import {CardGridModule} from "../../@shared/card-grid/card-grid.module";
 import {Angular2SmartTableModule} from "angular2-smart-table";
+import {GauzyButtonActionModule} from "../../@shared/gauzy-button-action/gauzy-button-action.module";
+import {HeaderTitleModule} from "../../@shared/components/header-title/header-title.module";
 
 const COMPONENTS = [
 	UsersComponent
@@ -56,6 +58,8 @@ const COMPONENTS = [
 		NbRouteTabsetModule,
 		TranslateModule,
 		NbSpinnerModule,
+    HeaderTitleModule,
+    GauzyButtonActionModule,
     PaginationModule,
     CardGridModule,
 		SharedModule
