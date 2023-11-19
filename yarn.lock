@@ -5206,10 +5206,10 @@ ajv@^6.10.0, ajv@^6.12.4, ajv@^6.12.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-angular2-smart-table@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/angular2-smart-table/-/angular2-smart-table-3.0.0.tgz#f07a642510c805533508928901b8db0fe8da3b52"
-  integrity sha512-GPzgynolHiwAxb5+HUT71vqmAIHVQf/+GwtE/9KsiNBLAL6ism8abIJr8SPNZ7/O6/MqMorgyylqrXD+yQtjcQ==
+angular2-smart-table@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/angular2-smart-table/-/angular2-smart-table-3.1.1.tgz#aac59351125d83c86c84590a6585a5b12afe614c"
+  integrity sha512-CBvHu/jsQSDmtr0X3+chcZohUQUBSePo5Du3gYu2RIrWGh8vAZxw8oqtnYcP2zSsXnthZrqW/bTel8aHRNz74g==
   dependencies:
     tslib "^2.6.0"
 

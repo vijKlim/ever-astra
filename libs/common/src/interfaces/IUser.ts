@@ -43,12 +43,14 @@ export enum ComponentLayoutStyleEnum {
 }
 
 export interface IUserViewModel {
-  fullName: string;
-  email: string;
-  bonus?: number;
-  endWork?: any;
   id: string;
-  roleName?: string;
-  role?: string;
-  userOrganizationId?: string;
+  name: string;
+  image: string;
+  email: string;
+  phone: string;
+  country: string;
+  city: string;
+  address: string;
+  ordersQty: number;
+  isBanned: boolean;
 }

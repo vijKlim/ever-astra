@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-
+import { Component } from '@angular/core';
+import {Cell} from 'angular2-smart-table';
 
 @Component({
 	selector: 'gauzy-email',
@@ -7,10 +7,9 @@ import { Component, Input } from '@angular/core';
 	styleUrls: ['./email.component.scss']
 })
 export class EmailComponent  {
-	@Input()
-	value: string | number;
-	@Input()
-	rowData: any;
+  renderValue = '';
 
-	constructor() {}
+  static componentInit(instance: EmailComponent, cell: Cell) {
+    instance.renderValue = cell.getValue();
+  }
 }

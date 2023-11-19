@@ -33,6 +33,13 @@ export class UserResolver {
 	}
 
   @Query()
+  async getCountOfUsers() {
+    return this._usersService.Model.find({ isDeleted: { $eq: false } })
+      .countDocuments()
+      .exec();
+  }
+
+  @Query()
   @UseGuards(FakeDataGuard)
   async generate1000Customers(
     _,

@@ -302,7 +302,7 @@ export class CustomersComponent implements AfterViewInit, OnDestroy {
 				};
 			});
 
-			// await this.loadDataCount();
+			await this.loadDataCount();
 
 			if (this.showOnlyBanned) {
 				usersVM = usersVM.filter((user) => user.isBanned);
