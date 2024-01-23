@@ -74,7 +74,8 @@ export class UsersComponent extends TranslationBaseComponent implements OnInit, 
   constructor(
     private readonly _router: Router,
     private readonly _usersService: UsersService,
-    private readonly _translateService: TranslateService
+    private readonly _translateService: TranslateService,
+    private readonly dialogService: NbDialogService
   ) {
     super(_translateService)
     this._loadSettingsSmartTable();
@@ -106,13 +107,13 @@ export class UsersComponent extends TranslationBaseComponent implements OnInit, 
           componentInitFunction: EmailComponent.componentInit
         },
         phone: {
-          title: this.getTranslation('SM_TABLE.PHONE'),
+          title: this.getTranslation('FORM.LABELS.PHONE_NUMBER'),
         },
         country: {
-          title: this.getTranslation('SM_TABLE.COUNTRY'),
+          title: this.getTranslation('FORM.PLACEHOLDERS.COUNTRY'),
         },
-        city: { title: this.getTranslation('SM_TABLE.CITY'), },
-        address: { title: this.getTranslation('SM_TABLE.ADDRESS') }
+        city: { title: this.getTranslation('FORM.PLACEHOLDERS.CITY'), },
+        address: { title: this.getTranslation('FORM.PLACEHOLDERS.ADDRESS') }
       },
       pager: {
         display: true,
@@ -197,6 +198,8 @@ export class UsersComponent extends TranslationBaseComponent implements OnInit, 
       .onChanged()
       .pipe(takeUntil(this.ngDestroy$))
       .subscribe(async (event) => {
+        console.log(event.action, event.filter, event.sort)
+
         if (event.action === 'page') {
           const page = event.paging.page;
           this._loadDataSmartTable(page);

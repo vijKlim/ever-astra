@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '../data/store.service';
 
 import { NbAuthStrategyClass } from '@nebular/auth/auth.options';
-import {getDummyImage} from "@ever-astrada/common";
+import {Utils} from "@ever-astrada/common";
 
 
 
@@ -198,7 +198,7 @@ export class AdminAuthStrategy extends NbAuthStrategy {
 		}
 
 		const letter = fullName.charAt(0).toUpperCase();
-		const pictureUrl = getDummyImage(300, 300, letter);
+		const pictureUrl = Utils.getDummyImage(300, 300, letter);
 
 		const mutation = gql`
 			mutation Register(

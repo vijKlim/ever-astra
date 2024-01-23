@@ -6,3 +6,9 @@ export * from './IFeature';
 export * from './IRolePermission';
 export * from './role.model';
 export * from './IGeoLocation';
+export * from './ILocale'
+export * from './IPaymentGateway'
+export * from './IProduct'
+export * from './IProductsCategory'
+export * from './IWarehouse'
+export * from './IWarehouseProduct'
