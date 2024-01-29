@@ -12,11 +12,7 @@ import {
   Utils
 } from '@ever-astrada/common';
 import {
-	WarehousesCarriersService,
-	WarehousesOrdersService,
-	WarehousesService,
-	WarehousesUsersService,
-	WarehousesProductsService,
+	WarehousesService
 } from '../../services/warehouses';
 
 import { UsersService } from '../../services/users';
@@ -29,10 +25,6 @@ export class WarehouseResolver {
 	constructor(
 		private readonly _geoLocationWarehousesService: GeoLocationsWarehousesService,
 		private readonly _warehousesService: WarehousesService,
-		private readonly _warehousesOrdersService: WarehousesOrdersService,
-		private readonly _warehousesUsersService: WarehousesUsersService,
-		private readonly _warehousesCarriersService: WarehousesCarriersService,
-		private readonly _warehouseProductsService: WarehousesProductsService,
 		private readonly _usersService: UsersService
 	) {}
 
@@ -42,44 +34,11 @@ export class WarehouseResolver {
 	}
 
 	@Query()
-	async getStoreProducts(
-		_,
-		{ storeId, fullProducts }: { storeId: string; fullProducts: boolean }
-	) {
-		return this._warehouseProductsService
-			.get(storeId, fullProducts)
-			.pipe(first())
-			.toPromise();
-	}
-
-	@Query()
-	async getStoreAvailableProducts(_, { storeId }: { storeId: string }) {
-		return this._warehouseProductsService
-			.getAvailable(storeId)
-			.pipe(first())
-			.toPromise();
-	}
-
-	@Query()
 	async getAllActiveStores(_, { fullProducts }: { fullProducts: boolean }) {
 		return this._warehousesService
 			.getAllActive(fullProducts)
 			.pipe(first())
 			.toPromise();
-	}
-
-	@Query()
-	async countStoreCustomers(_, { storeId }: { storeId: string }) {
-		const storeOrders = await this._warehousesOrdersService
-			.get(storeId)
-			.pipe(first())
-			.toPromise();
-
-		const storeCustomerIds = storeOrders.map((order) =>
-			order.user._id.toString()
-		);
-
-		return new Set(storeCustomerIds).size;
 	}
 
 	@Query('nearbyStores')
@@ -113,14 +72,6 @@ export class WarehouseResolver {
 		);
 
 		return merchants.map((m) => new Warehouse(m));
-	}
-
-	@Query()
-	async getStoreCustomers(
-		_,
-		{ storeId }: { storeId: string }
-	): Promise<User[]> {
-		return this._warehousesUsersService.getPromise(storeId);
 	}
 
 	@Query()
@@ -201,34 +152,6 @@ export class WarehouseResolver {
 		return this._warehousesService.removeMultipleByIds(ids);
 	}
 
-	@ResolveField('orders')
-	async getOrders(_warehouse: IWarehouse) {
-		const warehouse = new Warehouse(_warehouse);
-		return this._warehousesOrdersService
-			.get(warehouse.id)
-			.pipe(first())
-			.toPromise();
-	}
-
-	@ResolveField('users')
-	async getUsers(_warehouse: IWarehouse) {
-		const warehouse = new Warehouse(_warehouse);
-
-		return this._warehousesUsersService
-			.get(warehouse.id)
-			.pipe(first())
-			.toPromise();
-	}
-
-	@ResolveField('carriers')
-	async getCarriers(_warehouse: IWarehouse) {
-		const warehouse = new Warehouse(_warehouse);
-
-		return this._warehousesCarriersService
-			.get(warehouse.id)
-			.pipe(first())
-			.toPromise();
-	}
 
 	@Mutation()
 	async updateWarehousePassword(

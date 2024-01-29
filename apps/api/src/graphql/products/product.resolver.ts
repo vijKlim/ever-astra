@@ -3,7 +3,6 @@ import { first } from 'rxjs/operators';
 import { ProductsService } from '../../services/products';
 import {
 	WarehousesService,
-	WarehousesProductsService,
 } from '../../services/warehouses';
 import { Product } from '@ever-astrada/common';
 
@@ -11,8 +10,7 @@ import { Product } from '@ever-astrada/common';
 export class ProductResolver {
 	constructor(
 		private readonly _productsService: ProductsService,
-		private readonly _warehousesService: WarehousesService,
-		private readonly _warehousesProductsService: WarehousesProductsService
+		private readonly _warehousesService: WarehousesService
 	) {}
 
 	@Query('product')
@@ -46,33 +44,6 @@ export class ProductResolver {
 		})
 			.countDocuments()
 			.exec();
-	}
-
-	@Mutation()
-	async removeProductsByIds(_, { ids }: { ids: string[] }) {
-		const warehouses = await this._warehousesService.find({
-			isDeleted: { $eq: false },
-		});
-		const products = await this._productsService.find({
-			_id: { $in: ids },
-			isDeleted: { $eq: false },
-		});
-		const productsIds = products.map((d) => d.id);
-
-		for (const warehouse of warehouses) {
-			const productsForDel = warehouse.products
-				.filter((p) => productsIds.includes(p.productId))
-				.map((p) => p.productId);
-
-			if (productsForDel.length > 0) {
-				await this._warehousesProductsService.remove(
-					warehouse.id,
-					productsForDel
-				);
-			}
-		}
-
-		await this._productsService.removeMultipleByIds(productsIds);
 	}
 
 	@Mutation()

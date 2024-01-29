@@ -36,13 +36,10 @@ type Warehouse {
 	isCarrierRequired: Boolean
 
 	devicesIds: [String!]!
-	devices: [Device!]! # Resolved
-	orders: [Order!]! # Resolved
 	users: [User!]! # Resolved
 	hasRestrictedCarriers: Boolean
 	carriersIds: [String!]
 	usedCarriersIds: [String!]
-	carriers: [Carrier!] # Resolved, if hasRestrictedCarriers is false -> returns null
 	orderBarcodeType: Int
 	useOnlyRestrictedCarriersForDelivery: Boolean
 	preferRestrictedCarriersForDelivery: Boolean
@@ -141,12 +138,7 @@ type Query {
 
 	getStoreCustomers(storeId: String!): [User!]!
 
-	getStoreProducts(
-		storeId: String!
-		fullProducts: Boolean!
-	): [WarehouseProduct!]!
 
-	getStoreAvailableProducts(storeId: String!): [WarehouseProduct!]!
 
 	getCountExistingCustomers: ExistingCustomersByStores!
 

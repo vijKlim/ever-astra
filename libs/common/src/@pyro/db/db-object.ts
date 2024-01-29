@@ -5,7 +5,7 @@ import { PyroObjectId } from './object-id';
 import * as mongoose from 'mongoose';
 import * as _ from 'lodash';
 import { Column, PrimaryColumn } from 'typeorm';
-import {toDate} from "../../utils";
+import {Utils} from "../../utils";
 
 export interface DBObjectClass extends Function {
 	modelName?: string;
@@ -66,11 +66,11 @@ export abstract class DBObject<
 	_updatedAt: Date | string;
 
 	get createdAt(): Date {
-		return this._createdAt != null ? toDate(this._createdAt) : null;
+		return this._createdAt != null ? Utils.toDate(this._createdAt) : null;
 	}
 
 	get updatedAt(): Date {
-		return this._updatedAt != null ? toDate(this._updatedAt) : null;
+		return this._updatedAt != null ? Utils.toDate(this._updatedAt) : null;
 	}
 
 	get id(): string {

@@ -1,4 +1,4 @@
-import IProduct from './IProduct';
+import {IProduct} from './IProduct';
 import { DBCreateObject, DBRawObject, PyroObjectId } from '../@pyro/db';
 
 /**
