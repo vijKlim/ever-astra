@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import {  Component } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 import { cleanKeys, isNotEmpty, mergeDeep } from '@ever-astrada/common-angular';
@@ -7,152 +7,152 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { TranslationBaseComponent } from '../language-base/translation-base.component';
 
 export interface IPaginationBase {
-	totalItems?: number;
-	activePage: number;
-	itemsPerPage: number;
+  totalItems?: number;
+  activePage: number;
+  itemsPerPage: number;
 }
 
 @UntilDestroy({ checkProperties: true })
 @Component({
-	template: ''
+  template: ''
 })
 export class PaginationFilterBaseComponent extends TranslationBaseComponent
-	implements AfterViewInit {
+   {
 
-	/**
-	 * Getter for minimum items per page
-	 * Can't be modified outside the class
-	 */
-	private _minItemPerPage: number = 10;
+  /**
+   * Getter for minimum items per page
+   * Can't be modified outside the class
+   */
+  private _minItemPerPage = 10;
 
-	public get minItemPerPage() {
-		return this._minItemPerPage;
-	}
+  public get minItemPerPage() {
+    return this._minItemPerPage;
+  }
 
-	private _pagination: IPaginationBase = {
-		totalItems: 0,
-		activePage: 1,
-		itemsPerPage: 10
-	};
+  private _pagination: IPaginationBase = {
+    totalItems: 0,
+    activePage: 1,
+    itemsPerPage: 10
+  };
 
-	public get pagination(): IPaginationBase {
-		return this._pagination;
-	}
+  public get pagination(): IPaginationBase {
+    return this._pagination;
+  }
 
-	protected set pagination(value: IPaginationBase) {
-		this._pagination = value;
-	}
+  protected set pagination(value: IPaginationBase) {
+    this._pagination = value;
+  }
 
-	protected pagination$: BehaviorSubject<IPaginationBase> = new BehaviorSubject({
-		activePage: this.pagination.activePage,
-		itemsPerPage: this.pagination.itemsPerPage
-	});
+  protected pagination$: BehaviorSubject<IPaginationBase> = new BehaviorSubject({
+    activePage: this.pagination.activePage,
+    itemsPerPage: this.pagination.itemsPerPage
+  });
 
-	protected subject$: Subject<any> = new Subject();
+  protected subject$: Subject<any> = new Subject();
 
-	/*
-	 * getter setter for filters
-	 */
-	protected _filters: any = {};
-	set filters(val: any) {
-		this._filters = val;
-	}
-	get filters() {
-		return this._filters;
-	}
+  /*
+   * getter setter for filters
+   */
+  protected _filters: any = {};
+  set filters(val: any) {
+    this._filters = val;
+  }
+  get filters() {
+    return this._filters;
+  }
 
-	constructor(
-		public override readonly translateService: TranslateService
-	) {
-		super(translateService);
-	}
+  constructor(
+    public override readonly translateService: TranslateService
+  ) {
+    super(translateService);
+  }
 
-	ngAfterViewInit() { }
 
-	/*
-	 * refresh pagination
-	 */
-	protected refreshPagination() {
-		this.setPagination({
-			...this.getPagination(),
-			activePage: 1,
-			itemsPerPage: this.minItemPerPage
-		});
-	}
 
-	protected setFilter(filter: any, doEmit: boolean = true) {
-		const fields = filter.field.split('.');
-		if (isNotEmpty(filter.search) || 'boolean' === typeof (filter.search)) {
-			const search = filter.search;
-			const keys = fields.reduceRight(
-				(value: string, key: string) => ({ [key]: value }),
-				search
-			);
-			this.filters = {
-				where: {
-					...this.filters.where,
-					...keys,
-					...mergeDeep(this.filters.where, keys)
-				}
-			};
-		} else {
-			const [field] = fields.reverse();
-			cleanKeys(this.filters.where, field);
-		}
-		if (doEmit) {
-			this.subject$.next(true);
-		}
-	}
+  /*
+   * refresh pagination
+   */
+  protected refreshPagination() {
+    this.setPagination({
+      ...this.getPagination(),
+      activePage: 1,
+      itemsPerPage: this.minItemPerPage
+    });
+  }
 
-	public onPageChange(selectedPage: number) {
-		this.setPagination({
-			...this.getPagination(),
-			activePage: selectedPage
-		});
+  protected setFilter(filter: any, doEmit: boolean = true) {
+    const fields = filter.field.split('.');
+    if (isNotEmpty(filter.search) || 'boolean' === typeof (filter.search)) {
+      const search = filter.search;
+      const keys = fields.reduceRight(
+        (value: string, key: string) => ({ [key]: value }),
+        search
+      );
+      this.filters = {
+        where: {
+          ...this.filters.where,
+          ...keys,
+          ...mergeDeep(this.filters.where, keys)
+        }
+      };
+    } else {
+      const [field] = fields.reverse();
+      cleanKeys(this.filters.where, field);
+    }
+    if (doEmit) {
+      this.subject$.next(true);
+    }
+  }
 
-		// Scroll to the table top
-		this.scrollTop();
-	}
+  public onPageChange(selectedPage: number) {
+    this.setPagination({
+      ...this.getPagination(),
+      activePage: selectedPage
+    });
 
-	protected getPagination(): IPaginationBase {
-		return this.pagination;
-	}
+    // Scroll to the table top
+    this.scrollTop();
+  }
 
-	protected setPagination(pagination: IPaginationBase) {
-		this.pagination = pagination;
+  protected getPagination(): IPaginationBase {
+    return this.pagination;
+  }
 
-		const { activePage, itemsPerPage } = this.getPagination();
-		this.pagination$.next({ activePage, itemsPerPage });
-	}
+  protected setPagination(pagination: IPaginationBase) {
+    this.pagination = pagination;
 
-	public onUpdateOption(itemsPerPage: number) {
-		this.refreshPagination();
-		this.pagination.itemsPerPage = itemsPerPage;
-		this.setPagination({
-			...this.getPagination(),
-			itemsPerPage: this.pagination.itemsPerPage
-		});
-	}
+    const { activePage, itemsPerPage } = this.getPagination();
+    this.pagination$.next({ activePage, itemsPerPage });
+  }
 
-	public onScroll() {
-		const activePage = this.pagination.activePage + 1;
-		this.setPagination({
-			...this.getPagination(),
-			activePage: activePage
-		});
-	}
+  public onUpdateOption(itemsPerPage: number) {
+    this.refreshPagination();
+    this.pagination.itemsPerPage = itemsPerPage;
+    this.setPagination({
+      ...this.getPagination(),
+      itemsPerPage: this.pagination.itemsPerPage
+    });
+  }
 
-	/**
-	 * Scroll to the table top after set pagination
-	 */
-	protected scrollTop() {
-		try {
-			const table = document.querySelector('ng2-smart-table > table');
-			if (!!table) {
-				table.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			}
-		} catch (error) {
-			console.log('Error while scrolling to the table top', error);
-		}
-	}
+  public onScroll() {
+    const activePage = this.pagination.activePage + 1;
+    this.setPagination({
+      ...this.getPagination(),
+      activePage: activePage
+    });
+  }
+
+  /**
+   * Scroll to the table top after set pagination
+   */
+  protected scrollTop() {
+    try {
+      const table = document.querySelector('ng2-smart-table > table');
+      if (table) {
+        table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } catch (error) {
+      console.log('Error while scrolling to the table top', error);
+    }
+  }
 }
