@@ -316,16 +316,16 @@ export class CustomersComponent implements AfterViewInit, OnDestroy {
 
 		// We call two times 'loadData'
 		// This is need because in every change on one of them the server emit and we want to receive it
-		this.$users = this._usersService
-			.getUsers({
-				skip: perPage * (page - 1),
-				limit: perPage,
-			})
-			.pipe(takeUntil(this.ngDestroy$))
-			.subscribe(async (u: User[]) => {
-				users = u;
-				await loadData();
-			});
+		// this.$users = this._usersService
+		// 	.getUsers({
+		// 		skip: perPage * (page - 1),
+		// 		limit: perPage,
+		// 	})
+		// 	.pipe(takeUntil(this.ngDestroy$))
+		// 	.subscribe(async (u: User[]) => {
+		// 		users = u;
+		// 		await loadData();
+		// 	});
 	}
 
 	private _applyTranslationOnSmartTable() {

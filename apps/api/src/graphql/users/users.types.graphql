@@ -61,7 +61,7 @@ type Query {
 		defaultLat: Float!
 	): ResponseGenerate1000Customers
 
-	getCountOfUsers: Int!
+	getCountOfUsers(findInput: UserFindInput): Int!
 
 	getCustomerMetrics(id: String!): CustomerMetrics
 }

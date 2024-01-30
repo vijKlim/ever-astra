@@ -3,11 +3,11 @@ import { Apollo, gql } from 'apollo-angular';
 import { map, share } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import {
-	IPagingOptions,
-	IResponseGenerate1000Customers,
-	IUser,
-	IUserRegistrationInput,
-	User
+  IPagingOptions,
+  IResponseGenerate1000Customers,
+  IUser, IUserFindInput,
+  IUserRegistrationInput,
+  User
 } from "@ever-astrada/common";
 
 
@@ -46,12 +46,12 @@ export class UsersService {
 			.pipe(map((res) => res.data['isUserExists']));
 	}
 
-	getUsers(pagingOptions?: IPagingOptions): Observable<User[]> {
+	getUsers(userFindInput?: any, pagingOptions?: IPagingOptions): Observable<User[]> {
 		return this._apollo
 			.watchQuery<{ users: IUser[] }>({
 				query: gql`
-					query AllUsers($pagingOptions: PagingOptionsInput) {
-						users(pagingOptions: $pagingOptions) {
+					query AllUsers($userFindInput: UserFindInput, $pagingOptions: PagingOptionsInput) {
+						users(findInput: $userFindInput, pagingOptions: $pagingOptions) {
 							_id
 							firstName
 							lastName
@@ -73,7 +73,7 @@ export class UsersService {
 						}
 					}
 				`,
-				variables: { pagingOptions },
+				variables: {  userFindInput, pagingOptions },
 				// pollInterval: 5000,
 			})
 			.valueChanges.pipe(
@@ -183,14 +183,15 @@ export class UsersService {
 			.toPromise();
 	}
 
-	async getCountOfUsers() {
+	async getCountOfUsers(userFindInput?: any) {
 		const res = await this._apollo
 			.query({
 				query: gql`
-					query GetCountOfUsers {
-						getCountOfUsers
+					query GetCountOfUsers($userFindInput: UserFindInput) {
+						getCountOfUsers(findInput: $userFindInput)
 					}
 				`,
+      variables: { userFindInput },
 			})
 			.toPromise();
 

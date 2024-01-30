@@ -54,3 +54,10 @@ export interface IUserViewModel {
   ordersQty: number;
   isBanned: boolean;
 }
+
+export interface IUserFindInput {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+}

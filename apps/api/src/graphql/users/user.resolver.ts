@@ -32,10 +32,25 @@ export class UserResolver {
 		return users.map((u) => new User(u));
 	}
 
-  @Query()
-  async getCountOfUsers() {
-    return this._usersService.Model.find({ isDeleted: { $eq: false } })
-      .countDocuments()
+  @Query('getCountOfUsers')
+  async getCountOfUsers(_, { findInput }): Promise<number> {
+    const searchParam = {
+      isDeleted: { $eq: false }
+    };
+
+    if (findInput) {
+      if (findInput.name) {
+        searchParam['firstName'] = {$regex: findInput.name, $options: 'i'};
+        searchParam['secondName'] = {$regex: findInput.name, $options: 'i'};
+      }
+
+      if (findInput.email) {
+        searchParam['email'] = {$regex: findInput.email, $options: 'i'};
+      }
+    }
+
+    return this._usersService.Model.find()
+      .countDocuments(searchParam)
       .exec();
   }
 

@@ -97,8 +97,21 @@ export class UsersService
 			sortObj[pagingOptions.sort.field] = pagingOptions.sort.sortBy;
 		}
 
+    const searchParam = {};
+
+    if (findInput) {
+      if (findInput.name) {
+        searchParam['firstName'] = {$regex: findInput.name, $options: 'i'};
+        searchParam['secondName'] = {$regex: findInput.name, $options: 'i'};
+      }
+
+      if (findInput.email) {
+        searchParam['email'] = {$regex: findInput.email, $options: 'i'};
+      }
+    }
+
 		return this.Model.find({
-			...findInput,
+			...searchParam,
 			isDeleted: { $eq: false },
 		})
 			.sort(sortObj)
