@@ -170,10 +170,9 @@ export class UsersComponent extends TranslationBaseComponent implements OnInit, 
       const usersData = new Array(this.dataCount);
       usersData.fill(usersVM[0], 0, this.dataCount)
       usersData.splice(perPage * (page - 1), perPage, ...usersVM);
-      console.log(usersData.length, usersData)
+
 
        await this.sourceSmartTable.load(usersData);
-      console.log("COUNT:", this.sourceSmartTable.count())
     };
 
     // We call two times 'loadData'
@@ -203,9 +202,6 @@ export class UsersComponent extends TranslationBaseComponent implements OnInit, 
       .onChanged()
       .pipe(takeUntil(this.ngDestroy$))
       .subscribe(async (event) => {
-        console.log(event.action, event.filter, event.sort, event)
-
-
 
         if (event.action === 'filter') {
           const initialValue = {};
@@ -215,8 +211,6 @@ export class UsersComponent extends TranslationBaseComponent implements OnInit, 
               [item['field']]: item['search'],
             };
           }, initialValue) as IUserFindInput;
-
-
         }
 
         if (event.action === 'page' || event.action === 'filter') {
@@ -246,11 +240,19 @@ export class UsersComponent extends TranslationBaseComponent implements OnInit, 
   selectUser({isSelected, data}) {
     this.disableButton = !isSelected;
     this.selectedUser = data;
-
     if (this.selectedUser) {
-      const checkName = data.fullName.trim();
+      const checkName = data.name.trim();
       this.userName = checkName ? checkName : 'User';
     }
+  }
 
+  edit(selectedItem?: IUser) {
+    if (selectedItem) {
+      this.selectUser({
+        isSelected: true,
+        data: selectedItem
+      });
+    }
+    this._router.navigate(['/pages/users/edit/' + this.selectedUser.id]);
   }
 }

@@ -70,43 +70,41 @@
   </nb-card-body>
 </nb-card>
 <ng-template #actionButtons let-selectedItem="selectedItem">
-  <ng-template>
-    <div class="actions">
-      <button
-        nbButton
-        [disabled]="!selectedItem && disableButton"
-        status="basic"
-        class="action secondary"
-        size="small"
-        underConstruction
-      >
-        <nb-icon class="mr-1" icon="eye-outline"></nb-icon
-        >{{ 'BUTTONS.VIEW' | translate }}
-      </button>
-      <button
-        nbButton
-        [disabled]="!selectedItem && disableButton"
-        (click)="edit(selectedItem)"
-        status="basic"
-        class="action primary"
-        size="small"
-      >
-        <nb-icon class="mr-1" icon="edit-outline"></nb-icon
-        >{{ 'BUTTONS.EDIT' | translate }}
-      </button>
-      <!--			<button-->
-      <!--				nbButton-->
-      <!--				[disabled]="!selectedItem && disableButton"-->
-      <!--				(click)="remove(selectedUser, selectedItem)"-->
-      <!--				status="basic"-->
-      <!--				class="action"-->
-      <!--				size="small"-->
-      <!--				[nbTooltip]="'BUTTONS.REMOVE' | translate"-->
-      <!--			>-->
-      <!--				<nb-icon status="danger" icon="trash-2-outline"></nb-icon>-->
-      <!--			</button>-->
-    </div>
-  </ng-template>
+  <div class="actions">
+    <button
+      nbButton
+      [disabled]="!selectedItem && disableButton"
+      status="basic"
+      class="action secondary"
+      size="small"
+      underConstruction
+    >
+      <nb-icon class="mr-1" icon="eye-outline"></nb-icon
+      >{{ 'BUTTONS.VIEW' | translate }}
+    </button>
+    <button
+      nbButton
+      [disabled]="!selectedItem && disableButton"
+      (click)="edit(selectedItem)"
+      status="basic"
+      class="action primary"
+      size="small"
+    >
+      <nb-icon class="mr-1" icon="edit-outline"></nb-icon
+      >{{ 'BUTTONS.EDIT' | translate }}
+    </button>
+    <button
+      nbButton
+      [disabled]="!selectedItem && disableButton"
+      (click)="remove(selectedUser, selectedItem)"
+      status="basic"
+      class="action"
+      size="small"
+      [nbTooltip]="'BUTTONS.REMOVE' | translate"
+    >
+      <nb-icon status="danger" icon="trash-2-outline"></nb-icon>
+    </button>
+  </div>
 </ng-template>
 <ng-template #visible>
   <button
