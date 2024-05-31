@@ -1,0 +1,6 @@
+<ng-container *ngIf="user$ | async as user">
+	<ngx-profile
+		[selectedUser]="user"
+		(userSubmitted)="goBack()"
+	></ngx-profile>
+</ng-container>

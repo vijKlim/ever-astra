@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './users.component';
 import {EditUserProfileComponent} from "./edit-user-profile/edit-user-profile.component";
+import {EditUserDataComponent} from "./edit-user-profile/edit-user-data/edit-user-data.component";
 
 export function redirectTo() {
 	return '/pages/dashboard';
@@ -16,7 +17,13 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: EditUserProfileComponent,
-    canActivate: []
+    canActivate: [],
+    children: [
+      {
+        path: '',
+        component: EditUserDataComponent
+      }
+    ]
   }
 ];
 

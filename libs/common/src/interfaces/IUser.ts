@@ -1,12 +1,13 @@
 import { IGeoLocation, IGeoLocationCreateObject } from './IGeoLocation';
 import { DBCreateObject, DBRawObject, PyroObjectId } from '../@pyro/db';
+import {IRelationalImageAsset} from "./IImageAsset";
 
-export interface IUserInitializeObject extends DBCreateObject {
+export interface IUserInitializeObject extends DBCreateObject, IRelationalImageAsset {
 	firstName?: string;
 	lastName?: string;
 	email?: string;
 	phone?: string;
-	image?: string;
+  imageUrl?: string;
 	socialIds?: string[];
 	isRegistrationCompleted?: boolean;
 	hash?: string;
@@ -25,7 +26,7 @@ export interface IResponseGenerate1000Customers {
 	message: string;
 }
 
-export interface IUser extends IUserCreateObject, IUserInitializeObject, DBRawObject {
+export interface  IUser extends IUserCreateObject, IUserInitializeObject, DBRawObject {
 	_id: PyroObjectId;
 	geoLocation: IGeoLocation;
 	devicesIds: string[];
@@ -60,4 +61,22 @@ export interface IUserFindInput {
   lastName: string;
   email: string;
   phone: string;
+}
+
+export interface IUserCreateInput extends IRelationalImageAsset {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  username?: string;
+  roleId?: string;
+  hash?: string;
+  imageUrl?: string;
+  preferredLanguage?: LanguagesEnum;
+  preferredComponentLayout?: ComponentLayoutStyleEnum;
+  timeZone?: string;
+}
+
+export interface IUserUpdateInput extends IUserCreateInput {
+  id?: string;
 }

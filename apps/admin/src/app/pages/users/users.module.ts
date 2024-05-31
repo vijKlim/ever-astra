@@ -31,9 +31,13 @@ import {Angular2SmartTableModule} from "angular2-smart-table";
 import {GauzyButtonActionModule} from "../../@shared/gauzy-button-action/gauzy-button-action.module";
 import {HeaderTitleModule} from "../../@shared/components/header-title/header-title.module";
 import {DirectivesModule} from "../../@shared/directives/directives.module";
+import {EditUserProfileComponent} from "./edit-user-profile/edit-user-profile.component";
+import {EditUserDataComponent} from "./edit-user-profile/edit-user-data/edit-user-data.component";
 
 const COMPONENTS = [
-	UsersComponent
+	UsersComponent,
+  EditUserProfileComponent,
+  EditUserDataComponent
 ];
 
 @NgModule({

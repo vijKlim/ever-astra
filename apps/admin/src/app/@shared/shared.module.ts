@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 // import { Pipes } from './pipes';
 import { Components } from './components';
 import { RouterModule } from '@angular/router';
+import {BackNavigationModule} from "./back-navigation";
 // import { AlertModalModule } from './alert-modal';
 // import { NgxPermissionsModule } from 'ngx-permissions';
 // import { DirectivesModule } from "./directives/directives.module";
 // import {EmployeeStartWorkModule} from "./employee/employee-start-work/employee-start-work.module";
 
 const Modules = [
-  // NgxPermissionsModule, BackNavigationModule, DirectivesModule, EmployeeStartWorkModule
+  BackNavigationModule// NgxPermissionsModule, DirectivesModule, EmployeeStartWorkModule
 ];
 
 @NgModule({
